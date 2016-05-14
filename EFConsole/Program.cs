@@ -10,6 +10,13 @@ namespace EFConsole
     {
         static void Main(string[] args)
         {
+            using (var db = new ContosoUniversityEntities())
+            {
+                foreach (var item in db.Course)
+                {
+                    Console.WriteLine(item.Title);
+                }
+            }
         }
     }
 }
