@@ -59,6 +59,15 @@ namespace EFConsole
                 }
 
                 #endregion
+                                
+                var c = new Course()
+                {
+                    Title = "Git Test123",
+                    //Credits = 4
+                };
+                c.Department = db.Department.Find(2);
+                db.Course.Add(c);
+                db.SaveChanges();
             }
         }
 

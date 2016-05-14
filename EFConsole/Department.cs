@@ -14,10 +14,14 @@ namespace EFConsole
     
     public partial class Department
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        partial void initialization();
+    	
+    	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Department()
         {
             this.Course = new HashSet<Course>();
+    
+    		initialization();
         }
     
         public int DepartmentID { get; set; }

@@ -75,6 +75,7 @@
     <Compile Include="Department.cs">
       <DependentUpon>ContosoUniversity.tt</DependentUpon>
     </Compile>
+    <Compile Include="edmx.Init.partial.cs" />
     <Compile Include="Enrollment.cs">
       <DependentUpon>ContosoUniversity.tt</DependentUpon>
     </Compile>
