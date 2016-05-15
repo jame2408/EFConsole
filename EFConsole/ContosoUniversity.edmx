@@ -15,6 +15,7 @@
           <Property Name="DepartmentID" Type="int" Nullable="false" />
           <Property Name="CreatedOn" Type="datetime" Nullable="false" StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="CourseType" Type="int" />
         </EntityType>
         <EntityType Name="CourseInstructor">
           <Key>
@@ -229,6 +230,7 @@
           <NavigationProperty Name="Person" Relationship="Self.CourseInstructor" FromRole="Course" ToRole="Person" />
           <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="CourseType" Type="ContosoUniversityModel.CourseType" />
         </EntityType>
         <EntityType Name="Department">
           <Key>
@@ -396,6 +398,12 @@
           <Property Type="String" Name="DeptName" Nullable="true" MaxLength="50" />
           <Property Type="Int32" Name="CourseCount" Nullable="true" />
         </ComplexType>
+        <EnumType Name="CourseType" IsFlags="true">
+          <Member Name="無" Value="0" />
+          <Member Name="前端" Value="1" />
+          <Member Name="後端" Value="2" />
+          <Member Name="全端" Value="4" />
+        </EnumType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -405,6 +413,7 @@
           <EntitySetMapping Name="Course">
             <EntityTypeMapping TypeName="ContosoUniversityModel.Course">
               <MappingFragment StoreEntitySet="Course">
+                <ScalarProperty Name="CourseType" ColumnName="CourseType" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
                 <ScalarProperty Name="CourseID" ColumnName="CourseID" />

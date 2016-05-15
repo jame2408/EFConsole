@@ -152,7 +152,26 @@ namespace EFConsole
 
                 #region SP練習 - Insert
 
-                var data = db.Insert部門資料("資訊部門", 50000.12m);
+                //var data = db.Insert部門資料("資訊部門", 50000.12m);
+
+                #endregion
+
+                #region Enum
+
+                db.Database.Log = Console.WriteLine;
+
+                var data = db.Course.Where(p => p.CourseType.Value.HasFlag(CourseType.後端));
+
+                foreach (var item in data)
+                {
+                    Console.WriteLine(item.Title);
+                }
+
+                //var c = db.Course.Find(5);
+                //c.CourseType = CourseType.前端 | CourseType.後端;
+                //db.SaveChanges();
+
+                Console.WriteLine(db.Course.Find(5).CourseType);
 
                 #endregion
 
