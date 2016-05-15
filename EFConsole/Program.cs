@@ -140,12 +140,20 @@ namespace EFConsole
 
                 #endregion 自製log
 
-                #region SP練習
-                var sp = db.Get各部門開課數量統計();
-                foreach (var item in sp)
-                {
-                    Console.WriteLine(item.DeptName + "\t" + item.CourseCount);
-                }
+                #region SP練習 - Select 
+
+                //var sp = db.Get各部門開課數量統計();
+                //foreach (var item in sp)
+                //{
+                //    Console.WriteLine(item.DeptName + "\t" + item.CourseCount);
+                //}
+
+                #endregion
+
+                #region SP練習 - Insert
+
+                var data = db.Insert部門資料("資訊部門", 50000.12m);
+
                 #endregion
 
             }

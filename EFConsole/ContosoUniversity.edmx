@@ -166,6 +166,10 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="GetDept" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="InsertDept" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Name" Type="nvarchar" Mode="In" />
+          <Parameter Name="Budget" Type="decimal" Mode="In" />
+        </Function>
         <EntityContainer Name="ContosoUniversityModelStoreContainer">
           <EntitySet Name="Course" EntityType="Self.Course" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CourseInstructor" EntityType="Self.CourseInstructor" Schema="dbo" store:Type="Tables" />
@@ -375,6 +379,10 @@
           </AssociationSet>
           <EntitySet Name="vwDeptCourseCount" EntityType="ContosoUniversityModel.vwDeptCourseCount" />
           <FunctionImport Name="Get各部門開課數量統計" ReturnType="Collection(ContosoUniversityModel.GetDept_Result)" />
+          <FunctionImport Name="Insert部門資料">
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Budget" Mode="In" Type="Decimal" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="vwDeptCourseCount">
           <Key>
@@ -473,6 +481,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Insert部門資料" FunctionName="ContosoUniversityModel.Store.InsertDept" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

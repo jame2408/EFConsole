@@ -38,5 +38,18 @@ namespace EFConsole
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDept_Result>("Get各部門開課數量統計");
         }
+    
+        public virtual int Insert部門資料(string name, Nullable<decimal> budget)
+        {
+            var nameParameter = name != null ?
+                new ObjectParameter("Name", name) :
+                new ObjectParameter("Name", typeof(string));
+    
+            var budgetParameter = budget.HasValue ?
+                new ObjectParameter("Budget", budget) :
+                new ObjectParameter("Budget", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Insert部門資料", nameParameter, budgetParameter);
+        }
     }
 }
