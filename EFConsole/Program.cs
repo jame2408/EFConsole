@@ -151,21 +151,27 @@ namespace EFConsole
                 Credits = 1
             };
 
-            //寫法1：使用Attach
+            //寫法1：使用Attach繫結離線物件，但繫結後是Unchanged狀態，要再修改儲存才有意義
             using (var db = new ContosoUniversityEntities())
             {
                 Console.WriteLine(db.Entry(c).State);
 
                 db.Course.Attach(c);
+                Console.WriteLine(c.Title);
                 Console.WriteLine(db.Entry(c).State);
 
-                c.Title = "MVC 6";
-                Console.WriteLine(db.Entry(c).State);
+                //這邊會再去db撈取編號11的資料，但撈回來後發現catch已經有資料，所以Title不會是DB資料，而是catch中的123。
+                db.Course.ToList();
+                var tt = db.Course.Find(11);
+                Console.WriteLine(c.Title);
 
-                db.SaveChanges();
+                //c.Title = "MVC 6";
+                //Console.WriteLine(db.Entry(c).State);
+
+                //db.SaveChanges();
             }
 
-            //寫法2：直接改狀態（不建議這樣寫，有資安問題）
+            //寫法2：直接改狀態（不建議這樣寫，有資安問題！）
             //using (var db = new ContosoUniversityEntities())
             //{
             //    c.Title = "MVC Core 1.0";
