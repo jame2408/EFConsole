@@ -48,26 +48,96 @@ namespace EFConsole
 
                 #region view 寫法(將Native SQL改放置view中)
 
-                var data = db.vwDeptCourseCount;
-                //判斷集合是否有值，使用Any()，效能最好
-                if (data.Any())
+                //var data = db.vwDeptCourseCount;
+                ////判斷集合是否有值，使用Any()，效能最好
+                //if (data.Any())
+                //{
+                //    foreach (var item in data)
+                //    {
+                //        Console.WriteLine(item?.DeptName + ":" + item?.CourseCount);
+                //    }
+                //}
+
+                #endregion view 寫法(將Native SQL改放置view中)
+
+                //var c = new Course()
+                //{
+                //    Title = "Git Test123",
+                //    //Credits = 4
+                //};
+                //c.Department = db.Department.Find(2);
+                //db.Course.Add(c);
+                //db.SaveChanges();
+
+                #region AsNoTracking() - 效能較快（唯讀資料使用）
+
+                //var data = db.Course.AsNoTracking();
+                //foreach (var item in data)
+                //{
+                //    Console.WriteLine(item.Title);
+                //}
+
+                #endregion AsNoTracking() - 效能較快（唯讀資料使用）
+
+                #region EF狀態
+
+                ////開啟記錄Log
+                //db.Database.Log = Console.WriteLine;
+
+                ////利用db.Entry(c).State取得c當下的狀態
+                //var c = db.Course.Find(10);
+                //Console.WriteLine(c.Title + "\t" + db.Entry(c).State); //狀態：Unchanged
+
+                //c.Credits += 1;
+                //Console.WriteLine(c.Title + "\t" + db.Entry(c).State); //狀態：Modified
+                //db.SaveChanges();
+
+                //db.Course.Remove(c);
+                //Console.WriteLine(c.Title + "\t" + db.Entry(c).State); //狀態：Deleted
+
+                ///* 以下範例為直接修改狀態，EF會依據你給的狀態做變更 */
+
+                ////將c資料刪除
+                //db.Entry(c).State = System.Data.Entity.EntityState.Deleted;
+
+                ////使用c的資料直接update c（有做事，但你可能看不出來）
+                //db.Entry(c).State = System.Data.Entity.EntityState.Modified;
+
+                ////將c的資料直接Insert回DB（像複製資料的感覺）
+                //db.Entry(c).State = System.Data.Entity.EntityState.Added;
+
+                //db.SaveChanges();
+
+                #endregion EF狀態
+
+                #region 自製log
+
+                db.Database.Log = Console.WriteLine;
+
+                var c = db.Course.Find(10);
+                c.Title = "Test 1234";
+                if (db.Entry(c).State == System.Data.Entity.EntityState.Modified)
                 {
-                    foreach (var item in data)
+                    var ce = db.Entry(c);
+                    var v1 = ce.CurrentValues.GetValue<string>("Title");
+                    v1 = c.Title;
+                    v1 = ce.Entity.Title;
+
+                    var v2 = ce.OriginalValues.GetValue<string>("Title");
+                    foreach (var prop in ce.OriginalValues.PropertyNames)
                     {
-                        Console.WriteLine(item?.DeptName + ":" + item?.CourseCount);
+                        //ce.OriginalValues.GetValue<string>("Title");
                     }
+                    Console.WriteLine("New:" + v1 + "\t\nOrig:" + v2);
+
+                    ce.CurrentValues.SetValues(new
+                    {
+                        ModifiedOn = DateTime.Now
+                    });
+                    db.SaveChanges();
                 }
 
-                #endregion
-                                
-                var c = new Course()
-                {
-                    Title = "Git Test123",
-                    //Credits = 4
-                };
-                c.Department = db.Department.Find(2);
-                db.Course.Add(c);
-                db.SaveChanges();
+                #endregion 自製log
             }
         }
 
