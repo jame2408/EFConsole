@@ -80,6 +80,9 @@
     <Compile Include="Enrollment.cs">
       <DependentUpon>ContosoUniversity.tt</DependentUpon>
     </Compile>
+    <Compile Include="GetDept_Result.cs">
+      <DependentUpon>ContosoUniversity.tt</DependentUpon>
+    </Compile>
     <Compile Include="OfficeAssignment.cs">
       <DependentUpon>ContosoUniversity.tt</DependentUpon>
     </Compile>

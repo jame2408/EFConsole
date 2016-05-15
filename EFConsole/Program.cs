@@ -140,36 +140,44 @@ namespace EFConsole
 
                 #endregion 自製log
 
+                #region SP練習
+                var sp = db.Get各部門開課數量統計();
+                foreach (var item in sp)
+                {
+                    Console.WriteLine(item.DeptName + "\t" + item.CourseCount);
+                }
+                #endregion
+
             }
 
-        #region 離線物件變成連線物件
-        var c = new Course()
-            {
-                CourseID = 11,
-                Title = "123",
-                DepartmentID = 1,
-                Credits = 1
-            };
+            #region 離線物件變成連線物件
+            //var c = new Course()
+            //{
+            //    CourseID = 11,
+            //    Title = "123",
+            //    DepartmentID = 1,
+            //    Credits = 1
+            //};
 
-            //寫法1：使用Attach繫結離線物件，但繫結後是Unchanged狀態，要再修改儲存才有意義
-            using (var db = new ContosoUniversityEntities())
-            {
-                Console.WriteLine(db.Entry(c).State);
+            ////寫法1：使用Attach繫結離線物件，但繫結後是Unchanged狀態，要再修改儲存才有意義
+            //using (var db = new ContosoUniversityEntities())
+            //{
+            //    Console.WriteLine(db.Entry(c).State);
 
-                db.Course.Attach(c);
-                Console.WriteLine(c.Title);
-                Console.WriteLine(db.Entry(c).State);
+            //    db.Course.Attach(c);
+            //    Console.WriteLine(c.Title);
+            //    Console.WriteLine(db.Entry(c).State);
 
-                //這邊會再去db撈取編號11的資料，但撈回來後發現catch已經有資料，所以Title不會是DB資料，而是catch中的123。
-                db.Course.ToList();
-                var tt = db.Course.Find(11);
-                Console.WriteLine(c.Title);
+            //    //這邊會再去db撈取編號11的資料，但撈回來後發現catch已經有資料，所以Title不會是DB資料，而是catch中的123。
+            //    db.Course.ToList();
+            //    var tt = db.Course.Find(11);
+            //    Console.WriteLine(c.Title);
 
-                //c.Title = "MVC 6";
-                //Console.WriteLine(db.Entry(c).State);
+            //    //c.Title = "MVC 6";
+            //    //Console.WriteLine(db.Entry(c).State);
 
-                //db.SaveChanges();
-            }
+            //    //db.SaveChanges();
+            //}
 
             //寫法2：直接改狀態（不建議這樣寫，有資安問題！）
             //using (var db = new ContosoUniversityEntities())

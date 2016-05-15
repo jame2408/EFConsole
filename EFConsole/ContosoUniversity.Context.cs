@@ -12,6 +12,8 @@ namespace EFConsole
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ContosoUniversityEntities : DbContext
     {
@@ -31,5 +33,10 @@ namespace EFConsole
         public virtual DbSet<OfficeAssignment> OfficeAssignment { get; set; }
         public virtual DbSet<Person> Person { get; set; }
         public virtual DbSet<vwDeptCourseCount> vwDeptCourseCount { get; set; }
+    
+        public virtual ObjectResult<GetDept_Result> Get各部門開課數量統計()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetDept_Result>("Get各部門開課數量統計");
+        }
     }
 }
