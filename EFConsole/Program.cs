@@ -112,33 +112,67 @@ namespace EFConsole
 
                 #region 自製log
 
-                db.Database.Log = Console.WriteLine;
+                //db.Database.Log = Console.WriteLine;
 
-                var c = db.Course.Find(10);
-                c.Title = "Test 1234";
-                if (db.Entry(c).State == System.Data.Entity.EntityState.Modified)
-                {
-                    var ce = db.Entry(c);
-                    var v1 = ce.CurrentValues.GetValue<string>("Title");
-                    v1 = c.Title;
-                    v1 = ce.Entity.Title;
+                //var c = db.Course.Find(10);
+                //c.Title = "MVC6 + C# 6.0 + Asp.net Core";
+                //if (db.Entry(c).State == System.Data.Entity.EntityState.Modified)
+                //{
+                //    var ce = db.Entry(c);
+                //    var v1 = ce.CurrentValues.GetValue<string>("Title");
+                //    v1 = c.Title;
+                //    v1 = ce.Entity.Title;
 
-                    var v2 = ce.OriginalValues.GetValue<string>("Title");
-                    foreach (var prop in ce.OriginalValues.PropertyNames)
-                    {
-                        //ce.OriginalValues.GetValue<string>("Title");
-                    }
-                    Console.WriteLine("New:" + v1 + "\t\nOrig:" + v2);
+                //    var v2 = ce.OriginalValues.GetValue<string>("Title");
+                //    foreach (var prop in ce.OriginalValues.PropertyNames)
+                //    {
+                //        //ce.OriginalValues.GetValue<string>("Title");
+                //    }
+                //    Console.WriteLine("New:" + v1 + "\t\nOrig:" + v2);
 
-                    ce.CurrentValues.SetValues(new
-                    {
-                        ModifiedOn = DateTime.Now
-                    });
-                    db.SaveChanges();
-                }
+                //    /*將ModifiedOn改至SaveChanges的partial中（請參考ContosoUniversityEntities.partial.cs），未來使用到*/
+                //    //ce.CurrentValues.SetValues(new
+                //    //{
+                //    //    ModifiedOn = DateTime.Now
+                //    //});
+                //    db.SaveChanges();
+                //}
 
                 #endregion 自製log
+
             }
+
+        #region 離線物件變成連線物件
+        var c = new Course()
+            {
+                CourseID = 11,
+                Title = "123",
+                DepartmentID = 1,
+                Credits = 1
+            };
+
+            //寫法1：使用Attach
+            using (var db = new ContosoUniversityEntities())
+            {
+                Console.WriteLine(db.Entry(c).State);
+
+                db.Course.Attach(c);
+                Console.WriteLine(db.Entry(c).State);
+
+                c.Title = "MVC 6";
+                Console.WriteLine(db.Entry(c).State);
+
+                db.SaveChanges();
+            }
+
+            //寫法2：直接改狀態（不建議這樣寫，有資安問題）
+            //using (var db = new ContosoUniversityEntities())
+            //{
+            //    c.Title = "MVC Core 1.0";
+            //    db.Entry(c).State = System.Data.Entity.EntityState.Modified;
+            //    db.SaveChanges();
+            //}
+            #endregion
         }
 
         private class DeptCourseCount
